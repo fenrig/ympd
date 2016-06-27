@@ -49,7 +49,7 @@ int download_stream(char *p_charbuf, char *dir)
 		
 		char cmd[256] = "cd ";
 		strcat(cmd, dir);
-		strcat(cmd, "; youtube-dl --no-mtime -- restrict-filenames --extract-audio --audio-format=mp3 -o '%(title)s.%(ext)s' --write-description && mpc update --wait && VV=$(ls /mnt/library/music/*.description -t | head -n1) && VV=$(basename $VV .description) && mpc add $VV.mp3 && echo $VV && find /mnt/library/music -type f -mtime +5 -delete");
+		strcat(cmd, "; youtube-dl --no-mtime -- restrict-filenames --extract-audio --audio-format=mp3 -o '%(title)s.%(ext)s' --write-description && mpc update --wait && VV=$(ls *.description -t | head -n1) && VV=$(basename $VV .description) && mpc add $VV.mp3 && echo $VV && find -type f -mtime +5 -delete");
         strcat(cmd, p_charbuf);
                 
         char *name[] = {"/bin/bash", "-c", cmd, NULL };

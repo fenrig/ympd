@@ -86,7 +86,7 @@ int main(int argc, char **argv)
         {"webport",      required_argument, 0, 'w'},
         {"user",         required_argument, 0, 'u'},
         {"version",      no_argument,       0, 'v'},
-        {"music_path"}   required_argument, 0, 'm'},
+        {"music_path",   required_argument, 0, 'm'},
         {"help",         no_argument,       0,  0 },
         {0,              0,                 0,  0 }
     };
