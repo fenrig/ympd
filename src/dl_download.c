@@ -69,7 +69,7 @@ int download_stream(char *p_charbuf, char *dir)
 		read(pipefd[0], res, sizeof(res));
 		
 		fprintf(fp, "Status: %d\n", status);
-		fprintf(fp, "Output:\n%s\n", res);
+		fprintf(fp, "Output:\n%s\n", &res);
 		
 		if(status == 0)
 		{
