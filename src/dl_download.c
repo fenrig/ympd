@@ -49,7 +49,7 @@ int download_stream(char *p_charbuf, char *dir)
 		
 		char cmd[256] = "cd ";
 		strcat(cmd, dir);
-		strcat(cmd, "; youtube-dl --no-mtime -- restrict-filenames --extract-audio --audio-format=mp3 -o '%(title)s.%(ext)s' --write-description ");
+		strcat(cmd, "; youtube-dl --no-mtime --restrict-filenames --extract-audio --audio-format=mp3 -o '%(title)s.%(ext)s' --write-description ");
 		strcat(cmd, p_charbuf);
 		strcat(cmd, " && mpc update --wait && VV=$(ls *.description -t | head -n1) && VV=$(basename $VV .description) && mpc add $VV.mp3 && echo $VV && find -type f -mtime +5 -delete");
         
@@ -69,7 +69,7 @@ int download_stream(char *p_charbuf, char *dir)
 		read(pipefd[0], res, sizeof(res));
 		
 		fprintf(fp, "Status: %d\n", status);
-		fprintf(fp, "Output:\n%s\n", &res);
+		fprintf(fp, "Output:\n%s\n", res);
 		
 		if(status == 0)
 		{
