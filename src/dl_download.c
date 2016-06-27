@@ -33,10 +33,13 @@ int download_stream(char *p_charbuf, char *dir)
 	
 	int pipefd[2];
 	char res[4096];
+	int status;
+	FILE *fp;
 	
 	if (pipe(pipefd) == -1){
 		exit(EXIT_FAILURE);
 	}
+	
 	
 	pid_t pid = fork();
 	if (pid == 0) /*child */
@@ -46,7 +49,7 @@ int download_stream(char *p_charbuf, char *dir)
 		
 		char cmd[256] = "cd ";
 		strcat(cmd, dir);
-		strcat(cmd, "; youtube-dl --max-quality=140 --extract-audio --audio-format=mp3 ");
+		strcat(cmd, "; youtube-dl --no-mtime -- restrict-filenames --extract-audio --audio-format=mp3 -o '%(title)s.%(ext)s' --write-description && mpc update --wait && VV=$(ls /mnt/library/music/*.description -t | head -n1) && VV=$(basename $VV .description) && mpc add $VV.mp3 && echo $VV && find /mnt/library/music -type f -mtime +5 -delete");
         strcat(cmd, p_charbuf);
                 
         char *name[] = {"/bin/bash", "-c", cmd, NULL };
@@ -56,18 +59,28 @@ int download_stream(char *p_charbuf, char *dir)
 	}
 	else
 	{
+	        fp = fopen("/tmp/log", "w+");
+	        fprintf(fp, "begin\n");
+	        fprintf(fp , "Fork\n");
 		close(pipefd[1]); /* close write end */
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
 		read(pipefd[0], res, sizeof(res));
 		
-		if(strstr(res, "100%") != NULL)
+		fprintf(fp, "Status: %d\n", status);
+		fprintf(fp, "Output:\n%s\n", res);
+		
+		if(status == 0)
 		{
+		        fprintf(fp, "\n\nDownloaded\n");
 			fprintf(stderr, "Downloaded:\n %s \n", res);
+			fclose(fp);
 			return 0;
 		}
 		else
 		{
+		        fprintf(fp, "\n\nNot Downloaded\n");
 			fprintf(stderr, "Error while downloading :\n %s\n", p_charbuf);
+			fclose(fp);
 			return 1;
 		}
 
