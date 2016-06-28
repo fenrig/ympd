@@ -41,7 +41,7 @@ int download_stream(char *p_charbuf, char *dir)
 	
 	char cmd[1024] = "cd ";
 	strcat(cmd, dir);
-	strcat(cmd, " ; /usr/bin/youtube-dl --no-mtime --restrict-filenames --extract-audio --audio-format=m4a -o '%(title)s.%(ext)s' --write-description ");
+	strcat(cmd, " ; /usr/bin/youtube-dl --no-mtime --restrict-filenames -o '%(title)s.%(ext)s' --write-description -f \"bestaudio[ext=m4a]\" ");
 	strcat(cmd, p_charbuf);
 	strcat(cmd, " ; /usr/bin/mpc update --wait && VV=$(ls *.description -t | head -n1) ; VV=$(basename $VV .description) ; /usr/bin/mpc add $VV.m4a && /usr/bin/echo $VV ; /usr/bin/find -type f -mtime +5 -delete");
         
