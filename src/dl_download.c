@@ -46,6 +46,7 @@ int download_stream(char *p_charbuf, char *dir)
 	{
 		close(pipefd[0]);  /* close unused read end */
 		dup2(pipefd[1], STDOUT_FILENO);
+		dup2(pipefd[1], STDERR_FILENO);
 		
 		char cmd[256] = "cd ";
 		strcat(cmd, dir);
