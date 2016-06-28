@@ -54,13 +54,12 @@ int download_stream(char *p_charbuf, char *dir)
 		strcat(cmd, p_charbuf);
 		strcat(cmd, " ; mpc update --wait && VV=$(ls *.description -t | head -n1) ; VV=$(basename $VV .description) ; mpc add $VV.m4a && echo $VV ; find -type f -mtime +5 -delete");
                 
-                
+                printf("/bin/bash -c %s\n\n", cmd);
                 
                 
         char *name[] = {"/bin/bash", "-c", cmd, NULL };
         
-        printf("/bin/bash -c ");
-        printf("%s\n\n", cmd);
+        
         
         execvp(name[0], name);
         _exit(EXIT_FAILURE);
