@@ -27,7 +27,6 @@
 #include <mpd/directory.h>
 #include <mpd/recv.h>
 
-
 int download_stream(char *p_charbuf, char *dir)
 {
 	
@@ -40,7 +39,13 @@ int download_stream(char *p_charbuf, char *dir)
 		exit(EXIT_FAILURE);
 	}
 	
-	
+	char cmd[1024] = "cd ";
+	strcat(cmd, dir);
+	strcat(cmd, " ; /usr/bin/youtube-dl --no-mtime --restrict-filenames --extract-audio --audio-format=m4a -o '%(title)s.%(ext)s' --write-description ");
+	strcat(cmd, p_charbuf);
+	strcat(cmd, " ; /usr/bin/mpc update --wait && VV=$(ls *.description -t | head -n1) ; VV=$(basename $VV .description) ; /usr/bin/mpc add $VV.m4a && /usr/bin/echo $VV ; /usr/bin/find -type f -mtime +5 -delete");
+        
+        
 	pid_t pid = fork();
 	if (pid == 0) /*child */
 	{
@@ -48,13 +53,7 @@ int download_stream(char *p_charbuf, char *dir)
 		dup2(pipefd[1], STDOUT_FILENO);
 		dup2(pipefd[1], STDERR_FILENO);
 		
-		char cmd[512] = "cd ";
-		strcat(cmd, dir);
-		strcat(cmd, " ; youtube-dl --no-mtime --restrict-filenames --extract-audio --audio-format=m4a -o '%(title)s.%(ext)s' --write-description ");
-		strcat(cmd, p_charbuf);
-		strcat(cmd, " ; mpc update --wait && VV=$(ls *.description -t | head -n1) ; VV=$(basename $VV .description) ; mpc add $VV.m4a && echo $VV ; find -type f -mtime +5 -delete");
-                
-                fprintf(pipefd[1], "/bin/bash -c %s\n\n", cmd);
+		
                 
                 
         char *name[] = {"/bin/bash", "-c", cmd, NULL };
@@ -69,6 +68,7 @@ int download_stream(char *p_charbuf, char *dir)
 	{
 	        fp = fopen("/tmp/log", "w+");
 	        fprintf(fp, "begin\n");
+	        fprintf(fp, "/bin/bash -c %s\n\n", cmd);
 	        fprintf(fp , "Fork\n");
 		close(pipefd[1]); /* close write end */
 		waitpid(pid, &status, 0);
