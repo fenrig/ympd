@@ -97,6 +97,8 @@ var app = $.sammy(function() {
     
     this.get(/\#\/favoriteradios\/(.*)/, function() {
         current_app = "favradios";
+        $('#panel-heading').text("Radio");
+        
          $('#breadcrump').removeClass('hide').empty().append("Favorite webradios");
          $('#panel-heading').text("Favorite webradios");
          
