@@ -67,6 +67,11 @@ td:last-child, td:first-child {
   width: 30px;
 }
 
+.favradiocatrow {
+        background-color: gray; 
+        font-weight: bold;
+}
+
 .notifications {
   position: fixed;
   z-index: 9999;
