@@ -100,10 +100,11 @@ var app = $.sammy(function() {
          $('#breadcrump').removeClass('hide').empty().append("Favorite webradios");
          $('#panel-heading').text("Favorite webradios");
          
+         $('#salamisandwich').addClass('hide');
          $('#dirble_panel').addClass('hide');
+         $('#next').addClass('hide');
          
          $('#favradio_panel').removeClass('hide');
-         
          $('#favradio_panel').addClass('active');
          
          load_favorite_webradios();
@@ -162,7 +163,10 @@ var app = $.sammy(function() {
         $('#dirble_loading').removeClass('hide');
         $('#dirble_left').find("tr:gt(0)").remove();
         $('#dirble_right').find("tr:gt(0)").remove();
-
+        
+        $('#favradio_panel').removeClass('active');
+        $('#favradio_panel').addClass('hide');
+        
         $('#panel-heading').text("Dirble");
         $('#dirble').addClass('active');
 
