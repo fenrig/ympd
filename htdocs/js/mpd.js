@@ -92,6 +92,11 @@ var app = $.sammy(function() {
         });
         $('#browse').addClass('active');
     });
+    
+    this.get((/\#\/favoriteradios\/(.*)/, function() {
+        current_app = "favradios";
+         $('#breadcrump').removeClass('hide').empty().append("<h1>TEST</h1>");
+    });
 
     this.get(/\#\/search\/(.*)/, function() {
         current_app = 'search';
