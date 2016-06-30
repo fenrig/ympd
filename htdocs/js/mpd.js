@@ -884,7 +884,7 @@ function dirble_load_categories() {
 }
 
 function load_favorite_webradios(){
-        $('#favradio_table > tbody > tr > td').on({
+        $('#favradio_table > tbody > tr > td[radiourl]').on({
             click: function() {
                 var _this = $(this);
                     if($(this).attr("radiourl") == null) return;
