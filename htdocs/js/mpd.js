@@ -101,6 +101,7 @@ var app = $.sammy(function() {
          $('#panel-heading').text("Favorite webradios");
          
          $('#dirble_panel').addClass('hide');
+         
          $('#favradio_panel').removeClass('hide');
          
          $('#favradio_panel').addClass('active');
@@ -112,6 +113,7 @@ var app = $.sammy(function() {
         current_app = 'search';
         $('#salamisandwich').find("tr:gt(0)").remove();
         $('#dirble_panel').addClass('hide');
+        $('#favradio_panel').removeClass('active');
         $('#favradio_panel').addClass('hide');
         var searchstr = this.params['splat'][0];
         
@@ -127,13 +129,16 @@ var app = $.sammy(function() {
         current_app = 'dirble';
         $('#breadcrump').removeClass('hide').empty().append("<li><a href=\"#/dirble/\">Categories</a></li><li>"+dirble_selected_cat+"</li>");
         $('#salamisandwich').addClass('hide');
+        
         $('#dirble_panel').removeClass('hide');
         $('#dirble_loading').removeClass('hide');
         $('#dirble_left').find("tr:gt(0)").remove();
         $('#dirble_right').find("tr:gt(0)").remove();
 
         $('#panel-heading').text("Dirble");
+        $('#favradio_panel').removeClass('active');
         $('#favradio_panel').addClass('hide');
+        
         $('#dirble').addClass('active');
 
         $('#next').addClass('hide');
@@ -875,7 +880,7 @@ function dirble_load_categories() {
 }
 
 function load_favorite_webradios(){
-        $('#dirble_left > tbody > tr > td').on({
+        $('#favradio_table > tbody > tr > td').on({
             click: function() {
                 var _this = $(this);
                     if($(this).attr("radiourl") == null) return;
