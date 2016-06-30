@@ -97,7 +97,6 @@ var app = $.sammy(function() {
     
     this.get(/\#\/favoriteradios\/(.*)/, function() {
         current_app = "favradios";
-        $('#panel-heading').text("Radio");
         
          $('#breadcrump').removeClass('hide').empty().append("Favorite webradios");
          $('#panel-heading').text("Favorite webradios");
@@ -886,7 +885,7 @@ function dirble_load_categories() {
 }
 
 function load_favorite_webradios(){
-        $('#favradio_table > tbody > tr > td[radiourl]').on({
+        $('#favradio_table > tbody > tr > td[radiourl]').off("click").on({
             click: function() {
                 var _this = $(this);
                     if($(this).attr("radiourl") == null) return;
