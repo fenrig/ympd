@@ -105,6 +105,7 @@ var app = $.sammy(function() {
          $('#dirble_panel').addClass('hide');
          $('#next').addClass('hide');
          
+         $('#add-all-songs').hide();
          $('#favradio_panel').removeClass('hide');
          $('#favradio_panel').addClass('active');
          
