@@ -38,6 +38,7 @@ var app = $.sammy(function() {
         $('#breadcrump').addClass('hide');
         $('#salamisandwich').removeClass('hide').find("tr:gt(0)").remove();
         $('#dirble_panel').addClass('hide');
+        $('#favradio_panel').addClass('hide');
         socket.send('MPD_API_GET_QUEUE,'+pagination);
 
         $('#panel-heading').text("Queue");
@@ -66,6 +67,7 @@ var app = $.sammy(function() {
         $('#breadcrump').removeClass('hide').empty().append("<li><a href=\"#/browse/0/\">root</a></li>");
         $('#salamisandwich').removeClass('hide').find("tr:gt(0)").remove();
         $('#dirble_panel').addClass('hide');
+        $('#favradio_panel').addClass('hide');
         socket.send('MPD_API_GET_BROWSE,'+pagination+','+(browsepath ? browsepath : "/"));
         // Don't add all songs from root
         if (browsepath) {
@@ -95,15 +97,24 @@ var app = $.sammy(function() {
     
     this.get(/\#\/favoriteradios\/(.*)/, function() {
         current_app = "favradios";
-         $('#breadcrump').removeClass('hide').empty().append("<h1>TEST</h1>");
+         $('#breadcrump').removeClass('hide').empty().append("Favorite webradios");
+         $('#panel-heading').text("Favorite webradios");
+         
+         $('#dirble_panel').addClass('hide');
+         $('#favradio_panel').removeClass('hide');
+         
+         $('#favradio_panel').addClass('active');
+         
+         load_favorite_webradios();
     });
 
     this.get(/\#\/search\/(.*)/, function() {
         current_app = 'search';
         $('#salamisandwich').find("tr:gt(0)").remove();
         $('#dirble_panel').addClass('hide');
+        $('#favradio_panel').addClass('hide');
         var searchstr = this.params['splat'][0];
-
+        
         $('#search > div > input').val(searchstr);
         socket.send('MPD_API_SEARCH,' + searchstr);
 
@@ -122,6 +133,7 @@ var app = $.sammy(function() {
         $('#dirble_right').find("tr:gt(0)").remove();
 
         $('#panel-heading').text("Dirble");
+        $('#favradio_panel').addClass('hide');
         $('#dirble').addClass('active');
 
         $('#next').addClass('hide');
@@ -860,6 +872,22 @@ function dirble_load_categories() {
             }
         });
     });
+}
+
+function load_favorite_webradios(){
+        $('#dirble_left > tbody > tr > td').on({
+            click: function() {
+                var _this = $(this);
+                    if($(this).attr("radiourl") == null) return;
+                
+                    socket.send("MPD_API_ADD_TRACK," + $(this).attr("radiourl"));
+                    $('.top-right').notify({
+                        message:{
+                            text: _this.text() + " added"
+                        }
+                    }).show();
+             }
+          });
 }
 
 
