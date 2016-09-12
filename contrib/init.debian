@@ -40,9 +40,9 @@ DAEMON_OPT="--user $YMPD_USER --webport $WEB_PORT --host $MPD_HOST --port $MPD_P
 do_start()
 {
     start-stop-daemon --start --background --quiet --pidfile $PIDFILE --make-pidfile \
-        --exec $DAEMON --test > /dev/null || return 1
+        --exec $DAEMON --test -m /mnt/library/music > /dev/null || return 1
     start-stop-daemon --start --background --quiet --pidfile $PIDFILE --make-pidfile \
-        --exec $DAEMON -- $DAEMON_OPT || return 2
+        --exec $DAEMON -- $DAEMON_OPT -m /mnt/library/music || return 2
 }
 
 do_stop()
@@ -102,4 +102,3 @@ case "$1" in
     exit 3
     ;;
 esac
-
