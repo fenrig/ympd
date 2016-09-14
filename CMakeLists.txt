@@ -24,7 +24,7 @@ include_directories(${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR}	${LIBMPDCLIENT_I
 
 include(CheckCSourceCompiles)
 
-set(CMAKE_C_FLAGS "-std=gnu99 -Wall -mfloat-abi=hard -mfpu=neon")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wall")
 set(CMAKE_C_FLAGS_DEBUG "-ggdb -pedantic")
 
 if(WITH_IPV6)
