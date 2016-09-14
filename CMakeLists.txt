@@ -24,8 +24,9 @@ include_directories(${PROJECT_BINARY_DIR} ${PROJECT_SOURCE_DIR}	${LIBMPDCLIENT_I
 
 include(CheckCSourceCompiles)
 
-set(CMAKE_C_FLAGS "-std=gnu99 -Wall")
+set(CMAKE_C_FLAGS "-std=gnu99 -Wall -mfloat-abi=hard -mfpu=neon")
 set(CMAKE_C_FLAGS_DEBUG "-ggdb -pedantic")
+
 if(WITH_IPV6)
     set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS NS_ENABLE_IPV6)
 endif()
@@ -36,7 +37,7 @@ if(WITH_SSL)
     set_property(DIRECTORY APPEND PROPERTY COMPILE_DEFINITIONS NS_ENABLE_SSL)
 endif()
 
-file(GLOB RESOURCES 
+file(GLOB RESOURCES
     RELATIVE ${PROJECT_SOURCE_DIR}
     htdocs/js/*
     htdocs/assets/*
