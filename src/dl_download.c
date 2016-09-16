@@ -1,7 +1,7 @@
 /* ympd
    (c) 2013-2014 Andrew Karpow <andy@ndyk.de>
    This project's homepage is: http://www.ympd.org
-   
+
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; version 2 of the License.
@@ -29,37 +29,37 @@
 
 int download_stream(char *p_charbuf, char *dir)
 {
-	
+
 	int pipefd[2];
 	char res[4096];
 	int status;
 	FILE *fp;
-	
+
 	if (pipe(pipefd) == -1){
 		exit(EXIT_FAILURE);
 	}
-	
+
 	char cmd[1024] = "cd ";
 	strcat(cmd, dir);
-	strcat(cmd, " ; /usr/bin/youtube-dl --no-mtime --restrict-filenames -o '%(title)s.%(ext)s' --write-description -f \"bestaudio[ext=m4a]\" ");
+	strcat(cmd, " ; /usr/bin/youtube-dl --no-mtime --no-check-certificate --restrict-filenames -o '%(title)s.%(ext)s' --write-description -f \"bestaudio[ext=m4a]\" ");
 	strcat(cmd, p_charbuf);
 	strcat(cmd, " && /usr/bin/mpc update --wait && VV=$(ls *.description -t | head -n1) && VV=$(basename $VV .description) && /usr/bin/mpc add $VV.m4a && /usr/bin/echo $VV && /usr/bin/find -type f -atime +14 -delete");
-        
-        
+
+
 	pid_t pid = fork();
 	if (pid == 0) /*child */
 	{
 		close(pipefd[0]);  /* close unused read end */
 		dup2(pipefd[1], STDOUT_FILENO);
 		dup2(pipefd[1], STDERR_FILENO);
-		
-		
-                
-                
+
+
+
+
         char *name[] = {"/bin/bash", "-c", cmd, NULL };
-        
-        
-        
+
+
+
         execvp(name[0], name);
         _exit(EXIT_FAILURE);
 
@@ -73,10 +73,10 @@ int download_stream(char *p_charbuf, char *dir)
 		close(pipefd[1]); /* close write end */
 		waitpid(pid, &status, 0);
 		read(pipefd[0], res, sizeof(res));
-		
+
 		fprintf(fp, "Status: %d\n", status);
 		fprintf(fp, "Output:\n%s\n", res);
-		
+
 		if(status == 0)
 		{
 		        fprintf(fp, "\n\nDownloaded\n");
@@ -93,5 +93,5 @@ int download_stream(char *p_charbuf, char *dir)
 		}
 
 	}
-	
+
 }
